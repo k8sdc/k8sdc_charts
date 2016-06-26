@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: k8sdc-keycloak
+  #namespace: {{ .namespace }}
+  namespace: k8sdc-system
+  labels:
+    app: k8sdc-keycloak
+spec:
+  rules:
+  - host: keycloak.k8sdc.io
+    http:
+      paths:
+      - backend:
+          serviceName: k8sdc-keycloak
+          servicePort: 8080

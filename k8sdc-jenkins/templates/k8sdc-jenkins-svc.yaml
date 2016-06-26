@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: k8sdc-jenkins
+  #namespace: {{ .namespace }}
+  namespace: k8sdc-devel
+  labels:
+    app: k8sdc-jenkins
+    heritage: k8sdc
+spec:
+  selector:
+    app: k8sdc-jenkins
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http
+      protocol: TCP
+    - name: jnlp
+      port: 50000
+      targetPort: jnlp
+      protocol: TCP

@@ -1,0 +1,61 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: k8sdc-jenkins
+  #namespace: {{ .namespace }}
+  namespace: k8sdc-devel
+  labels:
+    app: k8sdc-jenkins
+    heritage: k8sdc
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: k8sdc-jenkins
+  strategy: {'type': 'RollingUpdate'}
+  template:
+    metadata:
+      labels:
+        app: k8sdc-jenkins
+    spec:
+      nodeSelector: 
+        kubernetes.io/hostname: node1.k8sdc.io
+      containers:
+      - name: k8sdc-jenkins
+        image: k8sdc/jenkins
+        ports:
+          - name: http
+            containerPort: 8080
+            protocol: TCP
+          - name: jnlp
+            containerPort: 50000
+            protocol: TCP
+        volumeMounts:
+          - name: k8sdc-jenkins
+            readOnly: false
+            mountPath: /var/jenkins_home/
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1000Mi
+          requests:
+            cpu: 600m
+            memory: 600Mi
+      volumes:
+        - name: k8sdc-jenkins
+          rbd:
+            monitors:
+              - 192.168.1.211
+              - 192.168.1.213
+              - 192.168.1.215
+            pool: k8sdc-devel
+            image: jenkins
+            user: admin
+            secretRef:
+              name: ceph-secret
+            keyring: /etc/ceph/ceph.client.admin.keyring
+            fsType: ext4
+            readOnly: false
+
+        

@@ -1,0 +1,14 @@
+name: k8sdc-jenkins
+description: Jenkins for k8sdc
+version: 0.1.0
+keywords:
+  - k8sdc
+  - jenkins
+maintainers:
+  - name: Des Drury
+    email: des@drury-family.com
+sources:
+  - https://github.com/jenkinsci/jenkins
+  - https://github.com/k8sdc/k8sdc_charts/k8sdc-jenkins
+  - https://github.com/k8sdc/k8sdc_docker/tree/master/jenkins
+home: http://k8sdc.io

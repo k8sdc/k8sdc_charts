@@ -1,0 +1,73 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: k8sdc-prometheus
+  namespace: {{ .namespace }}
+  labels:
+    app: k8sdc-prometheus
+    heritage: k8sdc
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: k8sdc-prometheus
+  strategy: {'type': 'RollingUpdate'}
+  template:
+    metadata:
+      labels:
+        app: k8sdc-prometheus
+    spec:
+      containers:
+      - name: k8sdc-prometheus
+        image: prom/prometheus
+        # env:
+        #   - name:  NODE_ENV
+        #     value: production
+        ports:
+          - name: http
+            containerPort: 9090
+            protocol: TCP
+        volumeMounts:
+          - name: k8sdc-prometheus
+            mountPath: /prometheus/
+          - name: k8sdc-prometheus-configmap
+            mountPath: /etc/prometheus/
+        resources:
+          limits:
+            cpu: 500m
+            memory: 800Mi
+          requests:
+            cpu: 400m
+            memory: 500Mi
+        # livenessProbe:
+        #   httpGet:
+        #     host: 127.0.0.1
+        #     path: /
+        #     port: 2368
+        #     httpHeaders:
+        #     - name: User-Agent
+        #       value: kubernetes
+        #   initialDelaySeconds: 60
+        #   timeoutSeconds: 1
+      volumes:
+        - name: k8sdc-prometheus
+          rbd:
+            monitors:
+              - 128.199.90.220
+              - 128.199.75.93
+              - 188.166.184.39
+            pool: k8sdc-system
+            image: prometheus
+            user: admin
+            secretRef:
+              name: ceph-secret
+            keyring: /etc/ceph/ceph.client.admin.keyring
+            fsType: ext4
+            readOnly: false
+          # hostPath: 
+          #   path: /var/lib/k8sdc-prometheus/
+        - name: k8sdc-prometheus-configmap
+          configMap:
+            name: k8sdc-prometheus
+        

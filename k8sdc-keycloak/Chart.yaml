@@ -1,0 +1,13 @@
+name: k8sdc-keycloak
+description: Keycloak for k8sdc
+version: 0.1.0
+keywords:
+  - k8sdc
+  - keycloak
+maintainers:
+  - name: Des Drury
+    email: des@drury-family.com
+sources:
+  - https://github.com/keycloak/keycloak
+  - https://github.com/k8sdc/k8sdc_charts/k8sdc-keycloak
+home: http://k8sdc.io

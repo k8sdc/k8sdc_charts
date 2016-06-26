@@ -1,0 +1,73 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: k8sdc-keycloak
+  #namespace: {{ .namespace }}
+  namespace: k8sdc-system
+  labels:
+    app: k8sdc-keycloak
+    heritage: k8sdc
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: k8sdc-keycloak
+  strategy: {'type': 'Recreate'}
+  template:
+    metadata:
+      labels:
+        app: k8sdc-keycloak
+    spec:
+      containers:
+      - name: k8sdc-keycloak
+        image: jboss/keycloak:1.9.3.Final
+        ports:
+          - name: http
+            containerPort: 8080
+            protocol: TCP
+        env:
+          - name: KEYCLOAK_USER
+            value: admin
+          - name: KEYCLOAK_PASSWORD
+            value: admin
+        args:
+          - -Dkeycloak.migration.realmName=k8sdc
+          - -Dkeycloak.migration.action=import
+          - -Dkeycloak.migration.strategy=IGNORE_EXISTING
+          - -Dkeycloak.migration.provider=singleFile
+          - -Dkeycloak.migration.file=/opt/jboss/keycloak/k8sdc/k8sdc-realm.json
+          - -Djboss.bind.address=0.0.0.0
+        volumeMounts:
+          - name: k8sdc-realm-json
+            mountPath: /opt/jboss/keycloak/k8sdc/
+        #   - name: k8sdc-keycloak
+        #     readOnly: false
+        #     mountPath: /var/keycloak_home/
+        resources:
+          limits:
+            cpu: 600m
+            memory: 500Mi
+          requests:
+            cpu: 400m
+            memory: 500Mi
+      volumes:
+          - name: k8sdc-realm-json
+            configMap:
+              name: k8sdc-keycloak
+      #   - name: k8sdc-keycloak
+      #     rbd:
+      #       monitors:
+      #         - 192.168.1.211
+      #         - 192.168.1.213
+      #         - 192.168.1.215
+      #       pool: k8sdc-devel
+      #       image: keycloak
+      #       user: admin
+      #       secretRef:
+      #         name: ceph-secret
+      #       keyring: /etc/ceph/ceph.client.admin.keyring
+      #       fsType: ext4
+      #       readOnly: false
+
+        

@@ -1,0 +1,13 @@
+name: k8sdc-prometheus
+description: Prometheus for k8sdc
+version: 0.1.0
+keywords:
+  - k8sdc
+  - prometheus
+maintainers:
+  - name: Des Drury
+    email: des@drury-family.com
+sources:
+  - https://github.com/prometheus/prometheus
+  - https://github.com/k8sdc/k8sdc_charts/k8sdc-prometheus
+home: http://k8sdc.io

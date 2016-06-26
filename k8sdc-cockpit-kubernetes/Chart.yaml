@@ -1,0 +1,14 @@
+name: k8sdc-cockpit-kubernetes
+description: Cockpit Kubernetes for k8sdc
+version: 0.1.0
+keywords:
+- k8sdc
+- cockpit
+- kubernetes
+maintainers:
+- name: Des Drury
+  email: des@drury-family.com
+sources:
+- https://github.com/cockpituous/cockpit/tree/master/pkg/kubernetes
+- https://github.com/k8sdc/k8sdc_charts/k8sdc-cockpit-kubernetes
+home: http://k8sdc.io

@@ -1,0 +1,15 @@
+name: k8sdc-opendj
+description: OpenDJ for k8sdc
+version: 0.1.0
+keywords:
+  - k8sdc
+  - opendj
+maintainers:
+  - name: Des Drury
+    email: des@drury-family.com
+sources:
+  - https://github.com/ForgeRock/opendj
+  - https://forgerock.org/opendj/
+  - https://github.com/k8sdc/k8sdc_charts/k8sdc-opendj
+  - https://github.com/k8sdc/k8sdc_docker/tree/master/opendj
+home: http://k8sdc.io

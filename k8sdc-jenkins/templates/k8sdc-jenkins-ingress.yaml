@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: k8sdc-jenkins
+  #namespace: {{ .namespace }}
+  namespace: k8sdc-devel
+  labels:
+    app: k8sdc-jenkins
+spec:
+  rules:
+  - host: jenkins.k8sdc.io
+    http:
+      paths:
+      - backend:
+          serviceName: k8sdc-jenkins
+          servicePort: 8080

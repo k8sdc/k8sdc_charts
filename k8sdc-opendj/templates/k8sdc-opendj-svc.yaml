@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: k8sdc-opendj
+  #namespace: {{ .namespace }}
+  namespace: k8sdc-system
+  labels:
+    app: k8sdc-opendj
+    heritage: k8sdc
+spec:
+  selector:
+    app: k8sdc-opendj
+  ports:
+    - name: ldap
+      port: 389
+      targetPort: ldap
+      protocol: TCP
+    - name: ldaps
+      port: 636
+      targetPort: ldaps
+      protocol: TCP

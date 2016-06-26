@@ -1,0 +1,59 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: k8sdc-opendj
+  #namespace: {{ .namespace }}
+  namespace: k8sdc-system
+  labels:
+    app: k8sdc-opendj
+    heritage: k8sdc
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: k8sdc-opendj
+  strategy: {'type': 'Recreate'}
+  template:
+    metadata:
+      labels:
+        app: k8sdc-opendj
+    spec:
+      containers:
+      - name: k8sdc-opendj
+        image: k8sdc/opendj
+        ports:
+          - name: ldap
+            containerPort: 389
+            protocol: TCP
+          - name: ldaps
+            containerPort: 636
+            protocol: TCP
+        # volumeMounts:
+        #   - name: k8sdc-opendj
+        #     readOnly: false
+        #     mountPath: /var/opendj_home/
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 200m
+            memory: 200Mi
+      # volumes:
+      #   - name: k8sdc-opendj
+      #     rbd:
+      #       monitors:
+      #         - 192.168.1.211
+      #         - 192.168.1.213
+      #         - 192.168.1.215
+      #       pool: k8sdc-devel
+      #       image: opendj
+      #       user: admin
+      #       secretRef:
+      #         name: ceph-secret
+      #       keyring: /etc/ceph/ceph.client.admin.keyring
+      #       fsType: ext4
+      #       readOnly: false
+
+        
