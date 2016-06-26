@@ -41,9 +41,9 @@ spec:
         volumeMounts:
           - name: k8sdc-realm-json
             mountPath: /opt/jboss/keycloak/k8sdc/
-        #   - name: k8sdc-keycloak
-        #     readOnly: false
-        #     mountPath: /var/keycloak_home/
+          - name: k8sdc-keycloak
+            readOnly: false
+            mountPath: /opt/jboss/keycloak/standalone/data/
         resources:
           limits:
             cpu: 600m
@@ -52,22 +52,22 @@ spec:
             cpu: 400m
             memory: 500Mi
       volumes:
-          - name: k8sdc-realm-json
-            configMap:
-              name: k8sdc-keycloak
-      #   - name: k8sdc-keycloak
-      #     rbd:
-      #       monitors:
-      #         - 192.168.1.211
-      #         - 192.168.1.213
-      #         - 192.168.1.215
-      #       pool: k8sdc-devel
-      #       image: keycloak
-      #       user: admin
-      #       secretRef:
-      #         name: ceph-secret
-      #       keyring: /etc/ceph/ceph.client.admin.keyring
-      #       fsType: ext4
-      #       readOnly: false
+        - name: k8sdc-realm-json
+          configMap:
+            name: k8sdc-keycloak
+        - name: k8sdc-keycloak
+          rbd:
+            monitors:
+              - 192.168.1.211
+              - 192.168.1.213
+              - 192.168.1.215
+            pool: k8sdc-system
+            image: k8sdc-keycloak
+            user: admin
+            secretRef:
+              name: ceph-secret
+            keyring: /etc/ceph/ceph.client.admin.keyring
+            fsType: ext4
+            readOnly: false
 
         
