@@ -2,7 +2,8 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: k8sdc-prometheus
-  namespace: {{ .namespace }}
+  #namespace: {{ .namespace }}
+  namespace: k8sdc-system
   labels:
     app: k8sdc-prometheus
     heritage: k8sdc
@@ -15,31 +16,36 @@ spec:
   strategy: {'type': 'RollingUpdate'}
   template:
     metadata:
+      name: k8sdc-prometheus
       labels:
         app: k8sdc-prometheus
     spec:
       containers:
       - name: k8sdc-prometheus
-        image: prom/prometheus
+        image: quay.io/coreos/prometheus:0.19.2
         # env:
         #   - name:  NODE_ENV
         #     value: production
+        args:
+          - '-storage.local.retention=6h'
+          - '-storage.local.memory-chunks=500000'
+          - '-config.file=/etc/prometheus/prometheus.yml'
         ports:
           - name: http
             containerPort: 9090
             protocol: TCP
         volumeMounts:
-          - name: k8sdc-prometheus
-            mountPath: /prometheus/
+          # - name: k8sdc-prometheus
+          #   mountPath: /prometheus/
           - name: k8sdc-prometheus-configmap
             mountPath: /etc/prometheus/
-        resources:
-          limits:
-            cpu: 500m
-            memory: 800Mi
-          requests:
-            cpu: 400m
-            memory: 500Mi
+        # resources:
+        #   limits:
+        #     cpu: 500m
+        #     memory: 800Mi
+        #   requests:
+        #     cpu: 400m
+        #     memory: 500Mi
         # livenessProbe:
         #   httpGet:
         #     host: 127.0.0.1
@@ -51,20 +57,20 @@ spec:
         #   initialDelaySeconds: 60
         #   timeoutSeconds: 1
       volumes:
-        - name: k8sdc-prometheus
-          rbd:
-            monitors:
-              - 128.199.90.220
-              - 128.199.75.93
-              - 188.166.184.39
-            pool: k8sdc-system
-            image: prometheus
-            user: admin
-            secretRef:
-              name: ceph-secret
-            keyring: /etc/ceph/ceph.client.admin.keyring
-            fsType: ext4
-            readOnly: false
+        # - name: k8sdc-prometheus
+        #   rbd:
+        #     monitors:
+        #       - 192.168.1.211
+        #       - 192.168.1.213
+        #       - 192.168.1.215
+        #     pool: k8sdc-system
+        #     image: k8sdc-prometheus
+        #     user: admin
+        #     secretRef:
+        #       name: ceph-secret
+        #     keyring: /etc/ceph/ceph.client.admin.keyring
+        #     fsType: ext4
+        #     readOnly: false
           # hostPath: 
           #   path: /var/lib/k8sdc-prometheus/
         - name: k8sdc-prometheus-configmap

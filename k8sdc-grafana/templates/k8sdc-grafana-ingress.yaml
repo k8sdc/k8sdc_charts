@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: k8sdc-grafana
+  namespace: k8sdc-system
+  labels:
+    app: k8sdc-grafana
+    heritage: k8sdc
+spec:
+  rules:
+  - host: grafana.k8sdc.io
+    http:
+      paths:
+      - backend:
+          serviceName: k8sdc-grafana
+          servicePort: 80
