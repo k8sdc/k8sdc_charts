@@ -1,18 +1,22 @@
 apiVersion: extensions/v1beta1
 kind: DaemonSet
 metadata:
-  name: k8sdc-node-exporter
+  name: k8sdc-prom-node-exporter
   namespace: k8sdc-system
+  #namespace: {{ .namespace }}
+  labels:
+    app: k8sdc-prom-node-exporter
+    heritage: k8sdc
 spec:
   template:
     metadata:
       labels:
-        app: node-exporter
-      name: node-exporter
+        app: k8sdc-prom-node-exporter
+      name: k8sdc-prom-node-exporter
     spec:
       containers:
       - image: prom/node-exporter
-        name: node-exporter
+        name: k8sdc-prom-node-exporter
         ports:
         - containerPort: 9100
           hostPort: 9100

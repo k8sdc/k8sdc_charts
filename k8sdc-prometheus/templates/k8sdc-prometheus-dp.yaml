@@ -27,25 +27,25 @@ spec:
         #   - name:  NODE_ENV
         #     value: production
         args:
-          - '-storage.local.retention=6h'
-          - '-storage.local.memory-chunks=500000'
+          - '-storage.local.retention=96h'
+          - '-storage.local.memory-chunks=800000'
           - '-config.file=/etc/prometheus/prometheus.yml'
         ports:
           - name: http
             containerPort: 9090
             protocol: TCP
         volumeMounts:
-          # - name: k8sdc-prometheus
-          #   mountPath: /prometheus/
+          - name: k8sdc-prometheus
+            mountPath: /prometheus/
           - name: k8sdc-prometheus-configmap
             mountPath: /etc/prometheus/
-        # resources:
-        #   limits:
-        #     cpu: 500m
-        #     memory: 800Mi
-        #   requests:
-        #     cpu: 400m
-        #     memory: 500Mi
+        resources:
+          limits:
+            cpu: 1500m
+            memory: 1000Mi
+          requests:
+            cpu: 1000m
+            memory: 1000Mi
         # livenessProbe:
         #   httpGet:
         #     host: 127.0.0.1
@@ -57,20 +57,20 @@ spec:
         #   initialDelaySeconds: 60
         #   timeoutSeconds: 1
       volumes:
-        # - name: k8sdc-prometheus
-        #   rbd:
-        #     monitors:
-        #       - 192.168.1.211
-        #       - 192.168.1.213
-        #       - 192.168.1.215
-        #     pool: k8sdc-system
-        #     image: k8sdc-prometheus
-        #     user: admin
-        #     secretRef:
-        #       name: ceph-secret
-        #     keyring: /etc/ceph/ceph.client.admin.keyring
-        #     fsType: ext4
-        #     readOnly: false
+        - name: k8sdc-prometheus
+          rbd:
+            monitors:
+              - 192.168.1.211
+              - 192.168.1.213
+              - 192.168.1.215
+            pool: k8sdc-system
+            image: k8sdc-prometheus
+            user: admin
+            secretRef:
+              name: ceph-secret
+            keyring: /etc/ceph/ceph.client.admin.keyring
+            fsType: ext4
+            readOnly: false
           # hostPath: 
           #   path: /var/lib/k8sdc-prometheus/
         - name: k8sdc-prometheus-configmap
