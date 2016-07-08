@@ -21,11 +21,16 @@ spec:
     spec:
       containers:
       - name: k8sdc-grafana
-        image: grafana/grafana
+        image: grafana/grafana:3.0.4
         ports:
           - name: http
             containerPort: 3000
             protocol: TCP
+        volumeMounts:
+          - name: k8sdc-grafana
+            mountPath: /var/lib/grafana/
+          - name: k8sdc-grafana-configmap
+            mountPath: /etc/grafana/
         resources:
           limits:
             cpu: 1000m
@@ -43,5 +48,22 @@ spec:
         #       value: kubernetes
         #   initialDelaySeconds: 60
         #   timeoutSeconds: 1
-
+      volumes:
+        - name: k8sdc-grafana
+          rbd:
+            monitors:
+              - 192.168.1.211
+              - 192.168.1.213
+              - 192.168.1.215
+            pool: k8sdc-system
+            image: k8sdc-grafana
+            user: admin
+            secretRef:
+              name: ceph-secret
+            keyring: /etc/ceph/ceph.client.admin.keyring
+            fsType: ext4
+            readOnly: false
+        - name: k8sdc-grafana-configmap
+          configMap:
+            name: k8sdc-grafana
         

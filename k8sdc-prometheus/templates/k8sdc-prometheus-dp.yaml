@@ -71,8 +71,6 @@ spec:
             keyring: /etc/ceph/ceph.client.admin.keyring
             fsType: ext4
             readOnly: false
-          # hostPath: 
-          #   path: /var/lib/k8sdc-prometheus/
         - name: k8sdc-prometheus-configmap
           configMap:
             name: k8sdc-prometheus

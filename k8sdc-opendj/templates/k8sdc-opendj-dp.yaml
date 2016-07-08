@@ -29,10 +29,10 @@ spec:
           - name: ldaps
             containerPort: 636
             protocol: TCP
-        # volumeMounts:
-        #   - name: k8sdc-opendj
-        #     readOnly: false
-        #     mountPath: /var/opendj_home/
+        volumeMounts:
+          - name: k8sdc-opendj
+            readOnly: false
+            mountPath: /opt/opendj/instance/
         resources:
           limits:
             cpu: 500m
@@ -40,20 +40,20 @@ spec:
           requests:
             cpu: 200m
             memory: 200Mi
-      # volumes:
-      #   - name: k8sdc-opendj
-      #     rbd:
-      #       monitors:
-      #         - 192.168.1.211
-      #         - 192.168.1.213
-      #         - 192.168.1.215
-      #       pool: k8sdc-devel
-      #       image: opendj
-      #       user: admin
-      #       secretRef:
-      #         name: ceph-secret
-      #       keyring: /etc/ceph/ceph.client.admin.keyring
-      #       fsType: ext4
-      #       readOnly: false
+      volumes:
+        - name: k8sdc-opendj
+          rbd:
+            monitors:
+              - 192.168.1.211
+              - 192.168.1.213
+              - 192.168.1.215
+            pool: k8sdc-system
+            image: k8sdc-opendj
+            user: admin
+            secretRef:
+              name: ceph-secret
+            keyring: /etc/ceph/ceph.client.admin.keyring
+            fsType: ext4
+            readOnly: false
 
         
