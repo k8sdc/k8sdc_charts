@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: k8sdc-prometheus
-        image: quay.io/coreos/prometheus:0.19.2
+        image: prom/prometheus:0.20.0
         # env:
         #   - name:  NODE_ENV
         #     value: production
