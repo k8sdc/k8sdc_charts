@@ -48,25 +48,26 @@ data:
      acl "Allow self entry modification";allow (write)(userdn = "ldap:///self");)
 
     dn: cn=Directory Administrators,ou=Groups,dc=k8sdc,dc=io
-    objectClass: groupofuniquenames
+    objectClass: groupOfNames
     objectClass: top
     ou: Groups
     cn: Directory Administrators
-    uniquemember: uid=k8sdc,ou=Administrators,dc=k8sdc,dc=io
+    member: uid=k8sdc,ou=Administrators,dc=k8sdc,dc=io
 
-    dn: cn=Grafana Users,ou=Groups,dc=k8sdc,dc=io
-    objectClass: groupofuniquenames
+    dn: cn=grafana-users,ou=Groups,dc=k8sdc,dc=io
+    objectClass: groupOfNames
     objectClass: top
     ou: Groups
-    cn: Grafana Users
-    uniquemember: uid=user1,ou=People,dc=k8sdc,dc=io
+    cn: grafana-users
+    member: uid=user1,ou=People,dc=k8sdc,dc=io
+    member: uid=user2,ou=People,dc=k8sdc,dc=io
 
-    dn: cn=Grafana Admins,ou=Groups,dc=k8sdc,dc=io
-    objectClass: groupofuniquenames
+    dn: cn=grafana-admins,ou=Groups,dc=k8sdc,dc=io
+    objectClass: groupOfNames
     objectClass: top
     ou: Groups
-    cn: Grafana Admins
-    uniquemember: uid=k8sdc,ou=Administrators,dc=k8sdc,dc=io
+    cn: grafana-admins
+    member: uid=k8sdc,ou=Administrators,dc=k8sdc,dc=io
 
     dn: uid=k8sdc,ou=Administrators,dc=k8sdc,dc=io
     objectClass: top
